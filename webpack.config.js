@@ -1,13 +1,13 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
+const webpack = require("webpack")
 module.exports = {
   entry: './client/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
   },
-
+ devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -28,5 +28,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin("styles.css"),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin()
   ]
 };
