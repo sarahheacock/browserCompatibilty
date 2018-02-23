@@ -5,7 +5,8 @@ import Home from './components/Home/Home';
 const Routes = () => {
   return (
     <Switch>
-      <Route path="/" exact component = {HomeContainer}/>
+      {/* <Route path="/" exact component = {HomeContainer}/> */}
+      <Route path="/" exact component = {Home}/>
     </Switch>
   )
 };
