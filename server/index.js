@@ -37,10 +37,10 @@ app.get('/db', (req, res, next) => {
 app.get('/db/:word', (req, res, next) => {
   // with req.params.word search the database for compatibility of that word
   res.setHeader('Content-Type', 'application/json');
-  
+
   fs.readFile('browser.json', 'utf-8', (err, data) => {
     const result = JSON.parse(data).find((obj) => {
-      obj.word = req.params.word;
+      return obj.word === req.params.word;
     });
     res.json(result);
   })

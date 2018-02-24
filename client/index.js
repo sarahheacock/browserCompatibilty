@@ -21,6 +21,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk'; // inverts control by dispatching functions
 import reducers from './reducers';
 
+import style from './scss/application.scss';
 
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
