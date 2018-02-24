@@ -8,8 +8,15 @@ const getKeyWords = require('./getKeywords.js')
 
 const PORT = 3000;
 
+
 // parse application/json
 app.use(bodyParser.json())
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+  next();
+})
 
 // app.use(express.static(path.join(__dirname, "../build")))
 app.get('/', (req, res)=>{
