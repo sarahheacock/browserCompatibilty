@@ -24,6 +24,18 @@ app.get('/styles.css', (req, res)=>{
   res.sendFile(path.join(__dirname, "../build/styles.css"))
 })
 
+
+// called on ComponentDidMount so that the frontend know what words to parse out
+app.get('/keywords', (req, res) => {  
+  res.setHeader('Content-Type', 'application/json');
+  res.send({
+    'const': true,
+    'let': true,
+    '() => ': true
+  })
+})
+
+
 // client will send another object of keywords
 // such as { 'const': true, '() => ': true } when the user fills out the
 // text box and presses submit
