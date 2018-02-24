@@ -1,6 +1,24 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import App from "./components/App.js";
-import style from "./scss/application.scss";
+import ReactDOM from "react-dom" ;
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import promiseMiddleware from 'redux-promise';
+import ReduxThunk from 'redux-thunk';
+import reducers from './reducers';
+import Routes from './Routes.js';
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+// class App extends React.Component{
+// 
+//   render(){
+//     return <div>hello again</div>
+//   }
+// }
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore)
+ReactDOM.render(
+  <Provider store={createStoreWithMiddleware(reducers)}> 
+    <BrowserRouter>
+      <Routes/>
+    </BrowserRouter>
+  </Provider>, document.getElementById('root')
+)
