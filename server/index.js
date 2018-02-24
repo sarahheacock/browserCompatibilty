@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const getKeyWords = require('./getKeywords.js')
 
 const PORT = 3000;
+const wordController = require('./controller/WordController');
 
 
 // parse application/json
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 
 // app.use(express.static(path.join(__dirname, "../build")))
 
+app.get('/', wordController.newWord);
 
 app.get('/bundle.js', (req, res)=>{
   res.sendFile(path.join(__dirname, "../build/bundle.js"))
@@ -38,14 +40,14 @@ app.get('/db', (req, res, next) => {
 
 app.get('/db/:word', (req, res, next) => {
   // with req.params.word search the database for compatibility of that word
-  res.setHeader('Content-Type', 'application/json');
-  
-  fs.readFile('browser.json', 'utf-8', (err, data) => {
-    const result = JSON.parse(data).find((obj) => {
-      obj.word = req.params.word;
-    });
-    res.json(result);
-  })
+  // res.setHeader('Content-Type', 'application/json');
+  //
+  // fs.readFile('browser.json', 'utf-8', (err, data) => {
+  //   const result = JSON.parse(data).find((obj) => {
+  //     obj.word = req.params.word;
+  //   });
+  //   res.json(result);
+  // })
 })
 
 

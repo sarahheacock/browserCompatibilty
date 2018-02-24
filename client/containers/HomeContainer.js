@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import { connect } from "react-redux";
 import { getKeywords } from "../actions";
-import KeywordItem from "../components/keyword_item"
+import KeywordItem from "../components/keyword_item";
 
 import Home from '../components/Home.js';
 
