@@ -1,7 +1,6 @@
 import React,{Component} from "react";
 import { connect } from "react-redux";
 import { getKeywords, reinitialize } from "../actions";
-import KeywordItem from "../components/keyword_item"
 
 import Results from '../components/Results.js';
 
@@ -18,9 +17,15 @@ class HomeContainer extends Component {
   }
 
   sendWord(e){
+    // e.target is the dom element that is calling sendWord
+    // if value is an empty string, then reinitialize the store state
+
+    // Otherwise send the last word or method in the textbox to the api call (getWords)
+    // api call will check that particular word's compatibility
+
     // TODO if textbox is empty reset state
     // TODO parse all data if user copies and pastes
-    if(!e.target.value){
+    if(e.target.value === ''){
       this.props.dispatch(reinitialize());
     }
     else {
@@ -31,7 +36,6 @@ class HomeContainer extends Component {
   }
 
   render() {
-    // const myData = data.list ? data.list.map((item) => (<div>{item}</div>)) : null;
     return (
       <div className="main">
         <h1>Check Browser Compatibility <img src="https://avatars0.githubusercontent.com/u/7565578?s=200&v=4"/></h1>

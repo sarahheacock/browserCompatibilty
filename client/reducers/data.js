@@ -6,7 +6,8 @@ const initialData = ["chrome","edge","firefox","ie","opera","safari","webview_an
 export default function (state={data: initialData}, action) {
   switch(action.type) {
     case 'INIT':
-      // console.log("start over");
+      // only called when the textbox is empty again
+      // returns all the compatibilities back to 'Yes'
       let newData = {...state.data}
       Object.keys(state.data).forEach((key) => {
         newData[key] = "Yes";
@@ -14,11 +15,13 @@ export default function (state={data: initialData}, action) {
       return {...state, data: newData};
 
     case 'UPDATE_DATA':
-      // console.log(action.payload.word)
+      // update data determines the new level of compatibility
+      // logic could probably be cleaned up but be careful...
       if(typeof action.payload !== 'object'){
         return state;
       }
       let oldData = {...state.data};
+
       Object.keys(oldData).forEach((key) => {
         let lowest;
         switch(action.payload[key]) {
@@ -38,6 +41,7 @@ export default function (state={data: initialData}, action) {
             break;
           default:
             // we do not know oldData
+            // however we do know that the new Data is either undefined, a number, or something weird
             // but we know that the payload is a number of weird character
             if(!action.payload[key] || isNaN(action.payload[key])){
               lowest = oldData[key];

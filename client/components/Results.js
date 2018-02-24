@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from 'prop-types';
 
 const Results = (props) => {
-  // {JSON.stringify(props.data.data, null, 4)}
   return (
     <div className="table-container">
       <table className="table">

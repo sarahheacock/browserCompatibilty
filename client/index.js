@@ -4,7 +4,7 @@ import HomeContainer from './containers/HomeContainer.js';
 
 // preferable when server does more than serve static files
 // Route is the conditionally shown component on matching a path to URL
-// essentially fancy case switch
+// essentially fancy case switch for client side
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 // provided injects store into container component
@@ -23,11 +23,12 @@ import reducers from './reducers';
 
 import style from './scss/application.scss';
 
+// routes are currently not used but if they are available if you choose to add routes
 ReactDOM.render(
   <Provider store={createStore(reducers, applyMiddleware(thunk))}>
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component = {HomeContainer}/>
+        <Route component={HomeContainer} />
       </Switch>
     </BrowserRouter>
   </Provider>, document.getElementById('root')
