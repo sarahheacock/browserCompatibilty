@@ -19,7 +19,7 @@ app.get('/styles.css', (req, res)=>{
 })
 
 // called on ComponentDidMount so that the frontend know what words to parse out
-app.get('/keywords', (req, res) => {
+app.get('/keywords', (req, res) => {  
   res.setHeader('Content-Type', 'application/json');
   res.send({
     'const': true,
@@ -27,6 +27,8 @@ app.get('/keywords', (req, res) => {
     '() => ': true
   })
 })
+
+
 
 // client will send another object of keywords
 // such as { 'const': true, '() => ': true } when the user fills out the
