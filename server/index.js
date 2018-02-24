@@ -19,9 +19,7 @@ app.use((req, res, next) => {
 })
 
 // app.use(express.static(path.join(__dirname, "../build")))
-app.get('/', (req, res)=>{
-  res.sendFile(path.join(__dirname, "../build/index.html"))
-})
+
 
 app.get('/bundle.js', (req, res)=>{
   res.sendFile(path.join(__dirname, "../build/bundle.js"))
@@ -36,10 +34,22 @@ app.get('/db', (req, res, next) => {
   // fs.readFile... and then loop
 })
 
-app.get('/:word', (req, res, next) => {
+app.get('/db/:word', (req, res, next) => {
   // with req.params.word search the database for compatibility of that word
+  res.setHeader('Content-Type', 'application/json');
+  
+  fs.readFile('browser.json', 'utf-8', (err, data) => {
+    const result = JSON.parse(data).find((obj) => {
+      obj.word = req.params.word;
+    });
+    res.json(result);
+  })
 })
 
+
+app.get('/*', (req, res)=>{
+  res.sendFile(path.join(__dirname, "../build/index.html"))
+})
 
 // client will send another object of keywords
 // such as { 'const': true, '() => ': true } when the user fills out the
