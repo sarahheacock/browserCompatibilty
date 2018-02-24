@@ -13,9 +13,9 @@ function mapStateToProps(state) {
 
 class HomeContainer extends Component {
   componentDidMount(){
-    console.log("hello");
-    console.log(this.props);
-    this.props.dispatch(getKeywords());
+    // console.log("hello");
+    // console.log(this.props);
+    this.props.dispatch(getKeywords('Array'));
   }
 
 

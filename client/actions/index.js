@@ -1,16 +1,18 @@
 import axios from 'axios';
 
-// const getKeywords = () => {
-export function getKeywords(){
-  const request = axios.post('http://localhost:3000/keywords', {'snippet': 'const let'})
-  .then(response => {
-    return response.data;
-  })
+export function updateData(payload){
   return {
-    type: 'GET_KEYWORDS',
-    payload: request
+    type: 'UPDATE_DATA',
+    payload: payload
   }
 }
 
-
-// export default getKeywords;
+export function getKeywords(word){
+  // actions must be plain objects, therefore we used custom middleware
+  // when creating the store to allow for api call first
+  return (dispatch) => {
+    axios.get(`http://localhost:3000/${word}`).then((res) => {
+      dispatch(updateData(res.data));
+    })
+  }
+}

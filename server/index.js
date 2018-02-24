@@ -31,11 +31,9 @@ app.get('/styles.css', (req, res)=>{
   res.sendFile(path.join(__dirname, "../build/styles.css"))
 })
 
-// app.post('/keywords', getKeyWords.checkFiles, getKeyWords.initialScrape, getKeyWords.getVersions, getKeyWords.getCompatibility, getKeyWords.parseCode);
-
 // temporary route to transfer over data from browser.json to database
 app.get('/db', (req, res, next) => {
-  // fs.readFile... and then loop through that data and call Word.create(data)
+  // fs.readFile... and then loop
 })
 
 app.get('/:word', (req, res, next) => {
