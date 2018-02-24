@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.js",
+    "start": "nodemon server/index.js",
     "start:dev": "node dev-server.js",
     "build": "webpack"
   },
@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.40",
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
     "node-sass": "^4.7.2",
     "react": "^16.2.0",
