@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const getKeywords = () => {
 export function getKeywords(){
-  const request = axios.get('localhost:3000/keywords')
+  const request = axios.post('http://localhost:3000/keywords', {'snippet': 'const let'})
   .then(response => {
     return response.data;
   })
