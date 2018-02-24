@@ -2,15 +2,45 @@ const cheerio = require('cheerio');
 const https = require('https');
 const fs = require('fs');
 
-let cache;
+
+const formatOutput = (body, cache) => {
+  return body.snippet.split(' ').reduce((obj, word) => {
+    if(cache[word]){
+      Object.keys(cache[word]).forEach((browser) => {
+        if(!obj[browser] || (cache[word][browser] !== "Yes" && isNaN(cache[word][browser]))) {
+          obj[browser] = cache[word][browser];
+        }
+        else if(obj[browser] !== "Yes" && isNaN(obj[browser])){
+          // obj[browser] = obj[browser]
+        }
+        else if(obj[browser] && obj[browser] && obj[browser] !== cache[word][browser]){
+          const prior = parseInt(obj[browser], 10);
+          const now = parseInt(cache[word][browser], 10);
+          if(obj[browser] === "Yes") obj[browser] = cache[word][browser];
+          else if(cache[word][browser] !== "Yes") obj[browser] = Math.max(prior, now).toString();
+        }
+      })
+    }
+    return obj;
+  }, {});
+}
 
 module.exports = {
-  initialScrape: (req, res, next) => {
-    // grab links to javascript releases
+  checkFiles: (req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
-    if(cache){
+
+    const exists = fs.existsSync('browser.json');
+    if(!exists){
       return next();
     }
+    fs.readFile('browser.json', 'utf-8', (err, data) => {
+      if(err) console.log(err);
+      return res.json(formatOutput(req.body, JSON.parse(data)));
+    })
+  },
+
+  initialScrape: (req, res, next) => {
+    // grab links to javascript releases
 
     https.get('https://developer.mozilla.org/en-US/docs/Web/JavaScript', (response) => {
       let body = '';
@@ -37,9 +67,9 @@ module.exports = {
   },
 
   getVersions: (req, res, next) => {
-    if(cache){
-      return next();
-    }
+    // if(cache){
+    //   return next();
+    // }
 
     let promises = res.locals.versions.map((version) => {
       return new Promise((resolve, reject) => {
@@ -85,9 +115,9 @@ module.exports = {
   },
 
   getCompatibility: (req, res, next) => {
-    if(cache){
-      return next();
-    }
+    // if(cache){
+    //   return next();
+    // }
 
     let promises = Object.keys(res.locals.keyWords).map((word) => {
       return new Promise((resolve, reject) => {
@@ -124,43 +154,24 @@ module.exports = {
     });
 
     Promise.all(promises).then((v) => {
-      const overall = v.reduce((obj, phrase) => {
-        if(Object.keys(phrase).length > 1){
-          obj[phrase.word] = phrase;
-          delete obj[phrase.word].word;
-          // delete obj[phrase.word].link;
-        }
-        return obj;
-      }, {})
-      res.locals.cache = overall;
+      // const overall = v.reduce((obj, phrase) => {
+      //   if(Object.keys(phrase).length > 1){
+      //     obj[phrase.word] = phrase;
+      //     delete obj[phrase.word].word;
+      //     // delete obj[phrase.word].link;
+      //   }
+      //   return obj;
+      // }, {})
+      res.locals.cache = v;
       next();
       // res.send(overall);
     })
   },
 
   parseCode: (req, res, next) => {
-    if(res.locals.cache){
-      cache = res.locals.cache;
-    }
-    const result = req.body.snippet.split(' ').reduce((obj, word) => {
-      if(cache[word]){
-        Object.keys(cache[word]).forEach((browser) => {
-          if(!obj[browser] || (cache[word][browser] !== "Yes" && isNaN(cache[word][browser]))) {
-            obj[browser] = cache[word][browser];
-          }
-          else if(obj[browser] !== "Yes" && isNaN(obj[browser])){
-            // obj[browser] = obj[browser]
-          }
-          else if(obj[browser] && obj[browser] && obj[browser] !== cache[word][browser]){
-            const prior = parseInt(obj[browser], 10);
-            const now = parseInt(cache[word][browser], 10);
-            if(obj[browser] === "Yes") obj[browser] = cache[word][browser];
-            else if(cache[word][browser] !== "Yes") obj[browser] = Math.max(prior, now).toString();
-          }
-        })
-      }
-      return obj;
-    }, {});
-    res.json(result);
+    fs.writeFile('browser.json', JSON.stringify(res.locals.cache, null, 4), (err) => {
+      res.json(res.locals.cache);
+      // return res.json(formatOutput(req.body, res.locals.cache));
+    })
   }
 }

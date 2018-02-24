@@ -31,11 +31,23 @@ app.get('/styles.css', (req, res)=>{
   res.sendFile(path.join(__dirname, "../build/styles.css"))
 })
 
+// app.post('/keywords', getKeyWords.checkFiles, getKeyWords.initialScrape, getKeyWords.getVersions, getKeyWords.getCompatibility, getKeyWords.parseCode);
+
+// temporary route to transfer over data from browser.json to database
+app.get('/db', (req, res, next) => {
+  // fs.readFile... and then loop through that data and call Word.create(data)
+})
+
+app.get('/:word', (req, res, next) => {
+  // with req.params.word search the database for compatibility of that word
+})
+
+
 // client will send another object of keywords
 // such as { 'const': true, '() => ': true } when the user fills out the
 // text box and presses submit
 // server will send back the browser compatibility of the input
-app.post('/keywords', getKeyWords.initialScrape, getKeyWords.getVersions, getKeyWords.getCompatibility, getKeyWords.parseCode);
+// app.post('/keywords', getKeyWords.checkFiles, getKeyWords.initialScrape, getKeyWords.getVersions, getKeyWords.getCompatibility, getKeyWords.parseCode);
 
 
 
