@@ -1,0 +1,4 @@
+new Schema = ({
+  word: ...
+  compatibility : {}
+})
